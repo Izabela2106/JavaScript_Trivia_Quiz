@@ -20,10 +20,6 @@ const player={
     questionCount:0
 }
 
-
-
-
-    
     function timerClock(time){
     time *=60;
     setInterval(()=>{
@@ -47,6 +43,7 @@ timer.appendChild(bar);
 
 const getQuestions= async(category)=>{
     const questions= await axios.get(`https://opentdb.com/api.php?amount=50&category=${category}&type=multiple`);
+  
     return questions.data.results;
 }
 
@@ -59,6 +56,7 @@ function newQuestion(){
     let randomNumber=Math.floor(Math.random()*questions.length);
     let randomQuestion=questions[randomNumber];
     questions.splice(randomNumber,1);
+      
   
     question.innerHTML=randomQuestion.question;
     correctAnswer=randomQuestion.correct_answer;
@@ -88,7 +86,8 @@ function newQuestion(){
 
 answers.forEach(el=>{
     el.addEventListener("click",()=>{
-        if(el.innerHTML===correctAnswer && acceptingAnswer){
+        if(escape(el.innerHTML) ===escape(correctAnswer) && acceptingAnswer){
+           
             el.style.backgroundColor="green";
             player.score++;
             scoreDisplay.innerHTML=`Score:${player.score}`;
@@ -98,11 +97,18 @@ answers.forEach(el=>{
             },500)
         }
         else if(acceptingAnswer){
+             
             el.style.backgroundColor="red";
-            let greenEl;
+            let greenEl=0;
+           
                answers.forEach(el=>{
-                if(el.innerHTML===correctAnswer);
+   
+    if(el.innerHTML===correctAnswer){
+                    
                    greenEl=el;
+                }
+                   
+                   
             })
             greenEl.style.backgroundColor="green";
             setTimeout(()=>{
