@@ -89,7 +89,6 @@ function newQuestion(){
         acceptingAnswer=true;
         
     })
-    console.log(answers);
         loader.classList.add('hidden');
         gameContainer.classList.remove('hidden');
     }
@@ -99,7 +98,6 @@ function newQuestion(){
 
 answers.forEach(el=>{
     el.addEventListener("click",()=>{
-        console.log(el.innerHTML, correctAnswer.innerHTML);
         if(el.innerHTML === correctAnswer.innerHTML && acceptingAnswer){
 
             el.style.backgroundColor="green";
@@ -120,12 +118,10 @@ answers.forEach(el=>{
     if(el.innerHTML===correctAnswer.innerHTML){
           
                    greenEl=el;
-                   console.log(greenEl);
                 }
                    
                    
             })
-            console.log(greenEl);
             greenEl.style.backgroundColor="green";
             setTimeout(()=>{
                 el.style.backgroundColor="white";
