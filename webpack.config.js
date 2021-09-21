@@ -1,6 +1,7 @@
 const {resolve}=require("path");
 
 module.exports={
+    watch:true,
     entry: {
     startScreen:"./startScreen.js",
     categories:"./categories.js",

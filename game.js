@@ -13,8 +13,16 @@ let time=2;
 
 let isActive=true;
 let acceptingAnswer=false;
-let correctAnswer;
+let correctAnswer=document.createElement('div');
 let questions;
+
+
+var decodeHtmlEntity = function(str) {
+    return str.replace(/&#(\d+);/g, function(match, dec) {
+      return String.fromCharCode(dec);
+    });
+  };
+
 const player={
     score:0,
     questionCount:0
@@ -50,7 +58,11 @@ const getQuestions= async(category)=>{
 
 
 function newQuestion(){
+
     if(isTime){
+        if(!questions.length){
+            endGame();
+        }
     player.questionCount++;
     questionDisplay.innerHTML=`Question:${player.questionCount}`
     let randomNumber=Math.floor(Math.random()*questions.length);
@@ -59,12 +71,12 @@ function newQuestion(){
       
   
     question.innerHTML=randomQuestion.question;
-    correctAnswer=randomQuestion.correct_answer;
+    correctAnswer.innerHTML=randomQuestion.correct_answer;
     let incorectanswers=randomQuestion.incorrect_answers;
     let tempanswers=[];
         
         
-    tempanswers.push(correctAnswer);
+    tempanswers.push(correctAnswer.innerHTML);
     incorectanswers.forEach(an=>{
         tempanswers.push(an);
         
@@ -73,10 +85,11 @@ function newQuestion(){
     tempanswers.sort((a,b)=>0.5-Math.random());
     
     answers.forEach((el,index)=>{
-        el.innerHTML=tempanswers[index];
+        el.innerHTML=decodeHtmlEntity( tempanswers[index]);
         acceptingAnswer=true;
         
     })
+    console.log(answers);
         loader.classList.add('hidden');
         gameContainer.classList.remove('hidden');
     }
@@ -86,8 +99,9 @@ function newQuestion(){
 
 answers.forEach(el=>{
     el.addEventListener("click",()=>{
-        if(escape(el.innerHTML) ===escape(correctAnswer) && acceptingAnswer){
-           
+        console.log(el.innerHTML, correctAnswer.innerHTML);
+        if(el.innerHTML === correctAnswer.innerHTML && acceptingAnswer){
+
             el.style.backgroundColor="green";
             player.score++;
             scoreDisplay.innerHTML=`Score:${player.score}`;
@@ -97,19 +111,21 @@ answers.forEach(el=>{
             },500)
         }
         else if(acceptingAnswer){
-             
+
             el.style.backgroundColor="red";
             let greenEl=0;
            
                answers.forEach(el=>{
    
-    if(el.innerHTML===correctAnswer){
-                    
+    if(el.innerHTML===correctAnswer.innerHTML){
+          
                    greenEl=el;
+                   console.log(greenEl);
                 }
                    
                    
             })
+            console.log(greenEl);
             greenEl.style.backgroundColor="green";
             setTimeout(()=>{
                 el.style.backgroundColor="white";
